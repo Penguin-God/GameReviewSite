@@ -84,9 +84,8 @@ export default function App() {
       </div>
     )
   }
-
   // --- 2. 기본 리뷰 목록 화면 (viewMode === 'list') ---
-  return (
+  else return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
       <header style={{ textAlign: 'center', marginBottom: '40px' }}>
         <h1 style={{ fontSize: '2.5em', marginBottom: '10px' }}>게임 리뷰 커뮤니티</h1>

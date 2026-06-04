@@ -16,16 +16,10 @@ export default function App() {
         <Link to="/account" style={{ fontSize: '1.2em', textDecoration: 'none' }}>내 계정</Link>
       </nav>
 
-      {/* 2. 주소에 따라 화면이 바뀌는 본문 영역 */}
       <main style={{ padding: '20px' }}>
-        <Routes>
-          {/* 인터넷 주소창에 '/' (기본 주소)가 입력되면 <Read />을 보여줘라 */}
+        <Routes> {/* path = "주소"  elemnet = file*/}
           <Route path="/" element={<Read />} />
-          
-          {/* '/write'가 입력되면 <Write />를 보여줘라 */}
           <Route path="/write" element={<Write />} />
-          
-          {/* '/account'가 입력되면 <Account />를 보여줘라 */}
           <Route path="/account" element={<Account />} />
         </Routes>
       </main>
