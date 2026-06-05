@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './supabase'
 
-// 1. 성향 타입 정의 (전체보기 제외)
 type GamePlayType = '서사주의' | '중립' | '도전적';
 
-// 2. 리뷰 데이터 구조 정의 (title 컬럼 추가 가정)
 interface Review {
   id: number;
   title: string;
@@ -14,7 +12,6 @@ interface Review {
 }
 
 export default function App() {
-  // 데이터 저장 및 UI 제어를 위한 상태(State)들
   const [reviews, setReviews] = useState<Review[]>([])
   const [activeTab, setActiveTab] = useState<GamePlayType>('서사주의')
   
@@ -24,12 +21,9 @@ export default function App() {
   const [selectedReview, setSelectedReview] = useState<Review | null>(null)
 
   // 앱이 켜지면 Supabase에서 데이터를 가져옵니다.
-  useEffect(() => {
-    fetchReviews()
-  }, [])
+  useEffect(() => {fetchReviews()}, [])
 
   const fetchReviews = async () => {
-    console.log("Supabase에서 리뷰 목록을 불러오는 중...")
     const { data, error } = await supabase
       .from('reviews')
       .select('*')
@@ -39,7 +33,6 @@ export default function App() {
       console.error('데이터를 가져오는 중 에러 발생:', error)
       alert(`불러오기 실패: ${error.message}\n(Supabase의 SELECT 정책(Policy)이 뚫려있는지 확인해보세요!)`)
     } else if (data) {
-      console.log("불러오기 성공한 데이터 개수:", data.length)
       setReviews(data)
     }
   }
