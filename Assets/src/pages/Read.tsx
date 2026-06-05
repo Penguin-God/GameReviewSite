@@ -15,15 +15,11 @@ export default function App() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [activeTab, setActiveTab] = useState<GamePlayType>('서사주의')
   
-  // 3. 페이지 전환을 제어할 핵심 상태
   // 'list' 이면 목록 화면을, 'detail' 이면 상세 본문 화면을 보여줍니다.
   const [viewMode, setViewMode] = useState<'list' | 'detail'>('list')
   const [selectedReview, setSelectedReview] = useState<Review | null>(null)
 
-  // 앱이 켜지면 Supabase에서 데이터를 가져옵니다.
-  useEffect(() => {fetchReviews()}, [])
-
-  const fetchReviews = async () => {
+  async function fetchReviews() {
     const { data, error } = await supabase
       .from('reviews')
       .select('*')
@@ -37,21 +33,23 @@ export default function App() {
     }
   }
 
+  // 앱이 켜지면 Supabase에서 데이터를 가져옵니다.
+  useEffect(() => {fetchReviews()}, [])
+
   // 현재 활성화된 탭 성향과 일치하는 리뷰들만 필터링합니다.
   const filteredReviews = reviews.filter((review) => review.game_play_type === activeTab)
 
   // 특정 리뷰를 클릭했을 때 상세 페이지로 진입하는 함수
-  const handleOpenDetail = (review: Review) => {
+  function handleOpenDetail(review: Review): void {
     setSelectedReview(review)
     setViewMode('detail') // 화면 모드를 상세 보기로 전환
   }
 
   // 상세 페이지에서 다시 목록으로 돌아오는 함수
-  const handleGoBackList = () => {
+  function handleGoBackList(): void {
     setSelectedReview(null)
     setViewMode('list') // 화면 모드를 목록 보기로 전환
   }
-
 
   // --- 1. 상세 본문 보기 화면 (viewMode === 'detail') ---
   if (viewMode === 'detail' && selectedReview) {
