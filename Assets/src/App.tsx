@@ -1,77 +1,29 @@
-import { useEffect, useState } from 'react'
-import { supabase } from './supabase'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 
-interface Review {
-  id: number;
-  content: string;
-}
+import Read from './pages/Read'
+import Write from './pages/Write'
+import Account from './pages/Account'
 
 export default function App() {
-  const [reviews, setReviews] = useState<Review[]>([])
-  
-  /* 새로 추가된 부분: 유저가 입력창에 적는 텍스트를 임시로 담아둘 공간입니다. */
-  const [newContent, setNewContent] = useState<string>("")
-
-  useEffect(() => {
-    fetchReviews()
-  }, [])
-
-  const fetchReviews = async () => {
-    const { data, error } = await supabase
-      .from('reviews')
-      .select('*')
-      /* 새로 추가된 부분: 게시물을 가져올 때 최신 글이 위로 오도록 정렬합니다. */
-      .order('created_at', { ascending: false })
-    
-    if (error) {
-      console.error('데이터 통신 에러:', error)
-    } else if (data) {
-      setReviews(data)
-    }
-  }
-
-  /* 새로 추가된 부분: Create() 류의 역할을 하는 리뷰 생성 함수입니다. */
-  const createReview = async () => {
-    if (newContent.trim() === "") return;
-
-    const { error } = await supabase
-      .from('reviews')
-      .insert([{ content: newContent }])
-
-    if (!error) {
-      setNewContent("") 
-      fetchReviews() 
-    } else {
-      console.error('리뷰 작성 에러:', error)
-    }
-  }
-
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-      <h1>게임 리뷰 커뮤니티</h1>
+    // BrowserRouter가 전체 앱을 감싸야 주소 이동이 가능해집니다.
+    <BrowserRouter>
       
-      {/* 새로 추가된 부분: 글을 작성하는 UI 영역입니다. */}
-      <div style={{ marginBottom: '20px' }}>
-        <textarea 
-          value={newContent}
-          onChange={(e) => setNewContent(e.target.value)}
-          placeholder="리뷰를 작성해보세요..."
-          style={{ width: '100%', height: '100px', marginBottom: '10px' }}
-        />
-        <button onClick={createReview} style={{ width: '100%', padding: '10px' }}>
-          리뷰 등록하기
-        </button>
-      </div>
+      {/* 1. 상단 네비게이션 바 (모든 페이지에서 공통으로 보입니다) */}
+      <nav style={{ padding: '20px', borderBottom: '1px solid #333', display: 'flex', gap: '20px', justifyContent: 'center' }}>
+        <Link to="/" style={{ fontSize: '1.2em', textDecoration: 'none' }}>홈 (리뷰 읽기)</Link>
+        <Link to="/write" style={{ fontSize: '1.2em', textDecoration: 'none' }}>리뷰 작성</Link>
+        <Link to="/account" style={{ fontSize: '1.2em', textDecoration: 'none' }}>내 계정</Link>
+      </nav>
 
-      <hr />
+      <main style={{ padding: '20px' }}>
+        <Routes> {/* path = "주소"  elemnet = file*/}
+          <Route path="/" element={<Read />} />
+          <Route path="/write" element={<Write />} />
+          <Route path="/account" element={<Account />} />
+        </Routes>
+      </main>
 
-      <ul>
-        {reviews.map((review) => (
-          <li key={review.id} style={{ marginBottom: '10px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
-            {review.content}
-          </li>
-        ))}
-      </ul>
-    </div>
+    </BrowserRouter>
   )
 }
