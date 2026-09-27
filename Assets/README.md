@@ -1,73 +1,34 @@
-# React + TypeScript + Vite
+# 여백 — 나의 기록 공간
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+`새 기획.txt`의 개인 기록 사이트를 `구현 단계.txt`의 **1단계** 범위로 구현한 React + TypeScript + Vite 앱입니다.
 
-Currently, two official plugins are available:
+## 실행
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+cd Assets
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+npm run build
+npm run lint
+npm run test -- --run
 ```
+
+## 현재 기능
+
+- 제목과 일반 텍스트 본문으로 여러 개의 글을 작성합니다. 빈 글이나 짧은 글도 저장할 수 있습니다.
+- 입력할 때마다 브라우저에 자동으로 임시 저장됩니다. `임시 저장` 버튼이나 Ctrl/Cmd + S로도 저장합니다.
+- 최근 수정한 순서로 목록을 보여주며, 글을 선택해서 이어 쓸 수 있습니다.
+- 새로고침하거나 브라우저를 다시 열면 저장된 글을 불러옵니다.
+- 저장 공간 부족이나 접근 실패를 화면에 알리고, 저장에 실패한 내용은 메모리에 유지합니다. 저장되지 않은 내용이 있으면 페이지를 떠날 때 브라우저 경고를 요청합니다.
+- 저장 데이터의 형식을 검증하며, 읽을 수 없는 데이터를 자동으로 덮어쓰지 않습니다. 다른 탭에서 데이터가 변경된 경우에도 덮어쓰기를 중단하고 새로고침을 안내합니다.
+
+## 저장 방식과 범위
+
+계정이나 서버 설정 없이 실행되며, `localStorage`의 `yeobaek.drafts.v1` 키에 버전과 글 목록을 저장합니다. 각 글에는 ID, 제목, 본문, 생성 시각, 수정 시각이 있습니다.
+
+기록은 **현재 기기·브라우저·사이트 주소에만** 남습니다. 브라우저 데이터를 삭제하면 기록도 삭제되며, 다른 기기와 동기화되지 않습니다. 같은 브라우저 프로필을 사용하는 사람에게 계정별로 분리되는 기능은 없습니다. 여러 탭에서 동시에 작성하는 대신 한 탭에서 사용하는 것을 권장합니다. 저장소 비교는 기존 변경을 감지하지만 동시 쓰기를 원자적으로 잠그는 기능은 아닙니다.
+
+공유 링크, 폴더·카테고리, 조회수, 계정 및 서버 동기화는 후속 단계입니다. 기존 게임 리뷰 화면과 Supabase 클라이언트는 제거했으며, 기존 원격 데이터베이스 자체를 수정하거나 삭제하지 않습니다.

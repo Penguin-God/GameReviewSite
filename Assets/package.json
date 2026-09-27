@@ -1,5 +1,5 @@
 {
-  "name": "game-review-web",
+  "name": "yeobaek",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,10 +11,8 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.99.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-router-dom": "^7.17.0"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
