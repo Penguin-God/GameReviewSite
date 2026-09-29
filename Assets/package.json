@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/dev.mjs",
+    "start": "node server/index.mjs",
+    "test:server": "node --test server/app.test.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -14,6 +16,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
+  "engines": { "node": ">=22.19.0" },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
